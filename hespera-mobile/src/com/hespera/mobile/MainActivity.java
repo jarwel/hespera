@@ -1,4 +1,6 @@
-package com.hespera.hespera;
+package com.hespera.mobile;
+
+import com.hespera.mobile.R;
 
 import android.app.Activity;
 import android.content.Intent;

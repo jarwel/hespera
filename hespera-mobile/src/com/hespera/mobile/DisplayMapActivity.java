@@ -1,9 +1,10 @@
-package com.hespera.hespera;
+package com.hespera.mobile;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
+import com.hespera.mobile.R;
 
 import android.os.Bundle;
 
