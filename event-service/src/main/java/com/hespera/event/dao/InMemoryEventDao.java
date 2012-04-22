@@ -46,11 +46,11 @@ public class InMemoryEventDao implements EventDao {
         return Lists.newArrayList(Iterables.filter(events, Predicates.and(during(begin, end), within(area))));
     }
 
-    private static Predicate<Event> during(final DateTime begin, final DateTime end) {
+    private static Predicate<Event> during(final DateTime start, final DateTime end) {
         return new Predicate<Event>() {
             @Override
             public boolean apply(@Nullable Event event) {
-                return event.getBegin().isBefore(end) || event.getEnd().isAfter(begin);
+                return event.getStart().isBefore(end) || event.getEnd().isAfter(start);
             }
         };
     }

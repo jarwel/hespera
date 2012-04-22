@@ -44,14 +44,14 @@ public class EventResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(
-        @QueryParam("begin") Long begin,
+        @QueryParam("start") Long start,
         @QueryParam("end") Long end,
         @QueryParam("longitude") Double longitude,
         @QueryParam("latitude") Double latitude,
         @QueryParam("distance") Double distance
     ) {
         Area area = new Area(new Rectangle2D.Double(longitude - distance, latitude - distance, distance * 2, distance * 2));
-        List<Event> events = eventDao.fetch(new DateTime(begin), new DateTime(end), area);
+        List<Event> events = eventDao.fetch(new DateTime(start), new DateTime(end), area);
         return Response.ok(events).build();
     }
 

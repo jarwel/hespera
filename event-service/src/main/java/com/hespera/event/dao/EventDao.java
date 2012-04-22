@@ -11,5 +11,5 @@ import java.util.UUID;
 public interface EventDao {
     void save(Event event);
     Event get(UUID id);
-    List<Event> fetch(DateTime begin, DateTime end, Area area);
+    List<Event> fetch(DateTime start, DateTime end, Area area);
 }

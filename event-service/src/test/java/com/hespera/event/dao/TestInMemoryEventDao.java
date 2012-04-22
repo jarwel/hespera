@@ -34,7 +34,7 @@ public class TestInMemoryEventDao {
 
         assertEquals(actual.getId(), expected.getId());
         assertEquals(actual.getTitle(), expected.getTitle());
-        assertTrue(actual.getBegin().isEqual(expected.getBegin()));
+        assertTrue(actual.getStart().isEqual(expected.getStart()));
         assertTrue(actual.getEnd().isEqual(expected.getEnd()));
         assertEquals(actual.getLongitude(), expected.getLongitude());
         assertEquals(actual.getLatitude(), expected.getLatitude());
