@@ -11,7 +11,7 @@ public class Event {
 
     private final UUID id;
     private final String title;
-    private final DateTime start;
+    private final DateTime begin;
     private final DateTime end;
     private final Long longitude;
     private final Long latitude;
@@ -20,14 +20,14 @@ public class Event {
     public Event(
         @JsonProperty("id") UUID id,
         @JsonProperty("title") String title,
-        @JsonProperty("start") DateTime start,
+        @JsonProperty("begin") DateTime begin,
         @JsonProperty("end") DateTime end,
         @JsonProperty("longitude") Long longitude,
         @JsonProperty("latitude") Long latitude
     ) {
         this.id = Preconditions.checkNotNull(id, "id cannot be null");
         this.title = Preconditions.checkNotNull(title, "title cannot be null");
-        this.start = Preconditions.checkNotNull(start, "start cannot be null");
+        this.begin = Preconditions.checkNotNull(begin, "begin cannot be null");
         this.end = Preconditions.checkNotNull(end, "end cannot be null");
         this.longitude = Preconditions.checkNotNull(longitude, "longitude cannot be null");
         this.latitude = Preconditions.checkNotNull(latitude, "latitude cannot be null");
@@ -43,9 +43,9 @@ public class Event {
         return title;
     }
 
-    @JsonProperty("start")
-    public DateTime getStart() {
-        return start;
+    @JsonProperty("begin")
+    public DateTime getBegin() {
+        return begin;
     }
 
     @JsonProperty("end")
@@ -61,5 +61,22 @@ public class Event {
     @JsonProperty("latitude")
     public Long getLatitude() {
         return latitude;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Event event = (Event) o;
+
+        if (!id.equals(event.id)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

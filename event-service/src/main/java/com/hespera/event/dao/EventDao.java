@@ -5,7 +5,10 @@ import com.hespera.event.model.Event;
 import org.joda.time.DateTime;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface EventDao {
-    List<Event> fetch(DateTime start, DateTime end, Long longitude, Long latitude);
+    void save(Event event);
+    Event get(UUID id);
+    List<Event> fetch(DateTime begin, DateTime end, Long longitude, Long latitude);
 }
