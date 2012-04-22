@@ -13,8 +13,8 @@ public class Event {
     private final String title;
     private final DateTime begin;
     private final DateTime end;
-    private final Long longitude;
-    private final Long latitude;
+    private final Double longitude;
+    private final Double latitude;
 
     @JsonCreator
     public Event(
@@ -22,8 +22,8 @@ public class Event {
         @JsonProperty("title") String title,
         @JsonProperty("begin") DateTime begin,
         @JsonProperty("end") DateTime end,
-        @JsonProperty("longitude") Long longitude,
-        @JsonProperty("latitude") Long latitude
+        @JsonProperty("longitude") Double longitude,
+        @JsonProperty("latitude") Double latitude
     ) {
         this.id = Preconditions.checkNotNull(id, "id cannot be null");
         this.title = Preconditions.checkNotNull(title, "title cannot be null");
@@ -54,12 +54,12 @@ public class Event {
     }
 
     @JsonProperty("longitude")
-    public Long getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
     @JsonProperty("latitude")
-    public Long getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 

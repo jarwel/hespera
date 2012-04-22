@@ -27,7 +27,7 @@ public class TestInMemoryEventDao {
 
     @Test
     public void testSave() {
-        Event expected = new Event(UUID.randomUUID(), "An Event", DateTime.now(), DateTime.now(), Long.valueOf(0), Long.valueOf(0));
+        Event expected = new Event(UUID.randomUUID(), "An Event", DateTime.now(), DateTime.now(), Double.valueOf(-122.3933494), Double.valueOf(37.7777683));
         eventDao.save(expected);
 
         Event actual = eventDao.get(expected.getId());
@@ -42,7 +42,7 @@ public class TestInMemoryEventDao {
 
     @Test
     public void testGet() {
-        Event expected = new Event(UUID.randomUUID(), "An Event", DateTime.now(), DateTime.now(), Long.valueOf(0), Long.valueOf(0));
+        Event expected = new Event(UUID.randomUUID(), "An Event", DateTime.now(), DateTime.now(), Double.valueOf(-122.3933494), Double.valueOf(37.7777683));
         eventDao.save(expected);
 
         Event actual = eventDao.get(expected.getId());

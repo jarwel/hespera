@@ -15,6 +15,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,10 +46,12 @@ public class EventResource {
     public Response get(
         @QueryParam("begin") Long begin,
         @QueryParam("end") Long end,
-        @QueryParam("longitude") Long longitude,
-        @QueryParam("latitude") Long latitude
+        @QueryParam("longitude") Double longitude,
+        @QueryParam("latitude") Double latitude,
+        @QueryParam("distance") Double distance
     ) {
-        List<Event> events = eventDao.fetch(new DateTime(begin), new DateTime(end), longitude, latitude);
+        Area area = new Area(new Rectangle2D.Double(longitude - distance, latitude - distance, distance * 2, distance * 2));
+        List<Event> events = eventDao.fetch(new DateTime(begin), new DateTime(end), area);
         return Response.ok(events).build();
     }
 
