@@ -48,7 +48,7 @@ public class DisplayMapActivity extends MapActivity {
 			new Date(2020, 1, 1), 
 			Double.valueOf(-96.769923), 
 			Double.valueOf(32.802955), 
-			Double.valueOf(1)
+			Double.valueOf(100)
 		);
 		
 		Log.i(getClass().getSimpleName(), String.valueOf(events.size()));
