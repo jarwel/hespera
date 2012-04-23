@@ -1,10 +1,11 @@
-package com.hespera.scraper;
+package com.hespera.scraper.geo;
 
-public enum Ballpark {
+public enum BaseballGeo {
 	
 	ARIZONA_DIAMONDBACKS (-112.066662, 33.444799),
 	ATLANTA_BRAVES (-84.38839, 33.734708),
 	BALTIMORE_ORIOLES (-76.6216993, 39.2832939),
+	BOSTON_RED_SOX (-71.0981704, 42.3462509),
 	CHICAGO_CUBS (-84.5080251, 39.0978555),
 	CHICAGO_WHITE_SOX (-87.635226, 41.830893),
 	CINCINNATI_REDS (-84.5080251, 39.0978555),
@@ -28,12 +29,14 @@ public enum Ballpark {
 	TORONTO_BLUE_JAYS (-79.3902933, 43.6415711),
 	SAN_DIEGO_PADRES (-117.1556175, 32.7056639),
 	SAN_FRANCISCO_GIANTS (-122.3908715, 37.7781428),
-	SEATTLE_MARINERS (-122.3343941, 47.5918403);
+	SEATTLE_MARINERS (-122.3343941, 47.5918403),
+	ST_LOUIS_CARDINALS (-90.1933056, 38.6237172),
+	WASHINGTON_NATIONALS (-77.007283, 38.8730682);
 	
 	private final double longitude;
 	private final double latitude;
 	
-	private Ballpark(double longitude, double latitude) {
+	private BaseballGeo(double longitude, double latitude) {
 		this.longitude = longitude;
 		this.latitude = latitude;
 	}

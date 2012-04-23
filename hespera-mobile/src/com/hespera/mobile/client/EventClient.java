@@ -38,7 +38,6 @@ public class EventClient {
 			reader = new  BufferedReader(new InputStreamReader(connection.getInputStream()));
 			
 			String response = reader.readLine();
-			System.out.println(response);
 			if(response != null) {
 				JSONArray jsonArray = new JSONArray(response);
 				for(int i = 0; i < jsonArray.length(); i++) {
@@ -64,6 +63,7 @@ public class EventClient {
 			}
 		}
 
+		Log.i(getClass().getSimpleName(), "fetched " + String.valueOf(events.size()) + " events");
 		return events;
 	}
 

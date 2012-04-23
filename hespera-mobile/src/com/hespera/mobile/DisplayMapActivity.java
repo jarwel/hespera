@@ -41,21 +41,28 @@ public class DisplayMapActivity extends MapActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		
-		EventClient eventClient = new EventClient();
-		List<Event> events = eventClient.fetchEvents(
-			new Date(2000, 1, 1), 
-			new Date(2020, 1, 1), 
-			Double.valueOf(-96.769923), 
-			Double.valueOf(32.802955), 
-			Double.valueOf(100)
-		);
-		
-		Log.i(getClass().getSimpleName(), String.valueOf(events.size()));
-		for(Event event : events) {
-			GeoPoint geoPoint = new GeoPoint((int)(event.getLatitude() * 1E6), (int)(event.getLongitude() * 1E6));  
-			OverlayItem item = new OverlayItem(geoPoint, event.getTitle(), event.getId().toString());
-			eventOverlay.addItem(item);
+		Bundle extras = getIntent().getExtras(); 
+		if(extras != null)
+		{
+			System.out.println("start: " + String.valueOf(extras.getLong("start")));
+			System.out.println("end: " + String.valueOf(extras.getLong("end")));
+			System.out.println("distance: " + String.valueOf(extras.getDouble("distance")));
+			
+			System.out.println(extras.getDouble("distance"));
+			EventClient eventClient = new EventClient();
+			List<Event> events = eventClient.fetchEvents(
+				new Date(extras.getLong("start")), 
+				new Date(extras.getLong("end")), 
+				Double.valueOf(-96.769923), 
+				Double.valueOf(32.802955), 
+				Double.valueOf(extras.getDouble("distance"))
+			);
+			
+			for(Event event : events) {
+				GeoPoint geoPoint = new GeoPoint((int)(event.getLatitude() * 1E6), (int)(event.getLongitude() * 1E6));  
+				OverlayItem item = new OverlayItem(geoPoint, event.getTitle(), event.getId().toString());
+				eventOverlay.addItem(item);
+			}
 		}
 	}
 
