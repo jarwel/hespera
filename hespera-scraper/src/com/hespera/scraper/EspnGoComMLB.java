@@ -78,7 +78,7 @@ public class EspnGoComMLB {
 	        	}
 	    	}
 		
-	        //Loader.loadAll(events);
+	        Loader.loadAll(events);
 			for(Event event : events) {
 				System.out.println(event);
 			}

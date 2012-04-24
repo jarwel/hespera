@@ -19,7 +19,6 @@ public class BalloonOverlayView extends FrameLayout {
 	private TextView snippet;
 
 	public BalloonOverlayView(Context context, int balloonBottomOffset) {
-
 		super(context);
 
 		setPadding(10, 0, 10, balloonBottomOffset);

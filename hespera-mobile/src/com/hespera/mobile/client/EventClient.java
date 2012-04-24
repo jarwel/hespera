@@ -18,7 +18,7 @@ import com.hespera.mobile.model.Event;
 
 public class EventClient {
 	
-	public List<Event> fetchEvents(Date start, Date end, Double longitude, Double latitude, Double distance) {
+	public List<Event> fetchEvents(Date start, Date end, Double x, Double y, Double w, Double l) {
 		List<Event> events = new ArrayList<Event>();
 		
 		HttpURLConnection connection = null;
@@ -27,9 +27,10 @@ public class EventClient {
 			String params = new StringBuilder()
 				.append("start=").append(start.getTime())
 				.append("&end=").append(end.getTime())
-				.append("&longitude=").append(longitude)
-				.append("&latitude=").append(latitude)
-				.append("&distance=").append(distance)
+				.append("&x=").append(x)
+				.append("&y=").append(y)
+				.append("&w=").append(w)
+				.append("&l=").append(l)
 			.toString();
 			
 			URI uri = new URI("http", null, "192.168.1.68", 8001, "/v1/event", params, null);
