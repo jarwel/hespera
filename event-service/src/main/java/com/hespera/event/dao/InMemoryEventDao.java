@@ -18,14 +18,6 @@ public class InMemoryEventDao implements EventDao {
 
     private Set<Event> events = Sets.newHashSet();
 
-    public InMemoryEventDao() {
-        // Load test data
-        events.add(new Event(UUID.randomUUID(), "Medieval Times", DateTime.now(), DateTime.now(), Double.valueOf(-96.8234080), Double.valueOf(32.7996500)));
-        events.add(new Event(UUID.randomUUID(), "Scarborough Faire", DateTime.now(), DateTime.now(), Double.valueOf(-96.8874450 ), Double.valueOf(32.3604140)));
-        events.add(new Event(UUID.randomUUID(), "Jazz under the Stars", DateTime.now(), DateTime.now(), Double.valueOf(-96.8011270), Double.valueOf(32.7885190)));
-    }
-
-
     @Override
     public void save(Event event) {
         events.add(event);
@@ -50,7 +42,7 @@ public class InMemoryEventDao implements EventDao {
         return new Predicate<Event>() {
             @Override
             public boolean apply(@Nullable Event event) {
-                return event.getStart().isBefore(end) || event.getEnd().isAfter(start);
+                return event.getStart().isBefore(end) && event.getEnd().isAfter(start);
             }
         };
     }
