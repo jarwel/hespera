@@ -16,7 +16,9 @@ import android.util.Log;
 
 import com.hespera.mobile.model.Event;
 
-public class EventClient {
+public enum EventClient {
+	
+	INSTANCE;
 	
 	public List<Event> fetchEvents(Date start, Date end, Double x, Double y, Double w, Double l) {
 		List<Event> events = new ArrayList<Event>();
