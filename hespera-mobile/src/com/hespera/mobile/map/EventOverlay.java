@@ -17,6 +17,7 @@ public class EventOverlay extends BalloonItemizedOverlay<OverlayItem> {
 	public EventOverlay(Drawable defaultMarker, MapView mapView) {
 		super(boundCenterBottom(defaultMarker), mapView);
 		setBalloonBottomOffset(defaultMarker.getBounds().height());
+		populate();
 	}
 
 	public void update(List<Event> events) {

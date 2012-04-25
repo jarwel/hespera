@@ -24,8 +24,10 @@ public final class R {
         public static final int balloon_item_title=0x7f050002;
         public static final int balloon_main_layout=0x7f050000;
         public static final int close_img_button=0x7f050004;
-        public static final int mapview=0x7f050006;
-        public static final int seekBar1=0x7f050005;
+        public static final int decrease_button=0x7f050005;
+        public static final int increase_button=0x7f050007;
+        public static final int mapview=0x7f050008;
+        public static final int time_label=0x7f050006;
     }
     public static final class layout {
         public static final int balloon_overlay=0x7f030000;
