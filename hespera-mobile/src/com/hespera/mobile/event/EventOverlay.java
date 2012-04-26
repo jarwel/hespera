@@ -1,14 +1,16 @@
-package com.hespera.mobile.map;
+package com.hespera.mobile.event;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import android.graphics.drawable.Drawable;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
-import com.hespera.mobile.model.Event;
+import com.hespera.mobile.map.BalloonItemizedOverlay;
 
 public class EventOverlay extends BalloonItemizedOverlay<OverlayItem> {
 
@@ -23,8 +25,12 @@ public class EventOverlay extends BalloonItemizedOverlay<OverlayItem> {
 	public void update(List<Event> events) {
 		items.clear();
 		for(Event event : events) {
-			GeoPoint geoPoint = new GeoPoint((int)(event.getLatitude() * 1E6), (int)(event.getLongitude() * 1E6));  
-			items.add(new OverlayItem(geoPoint, event.getTitle(), event.getId().toString()));
+			SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy h:mm a");
+			sdf.setTimeZone(TimeZone.getDefault());
+			
+			GeoPoint geoPoint = new GeoPoint((int)(event.getLatitude() * 1E6), (int)(event.getLongitude() * 1E6));
+			String snippet = sdf.format(event.getStart());
+			items.add(new OverlayItem(geoPoint, event.getTitle(), snippet));
 		}
 		setLastFocusedIndex(-1);
 		populate();

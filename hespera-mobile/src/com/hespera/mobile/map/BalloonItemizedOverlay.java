@@ -20,7 +20,7 @@ import com.hespera.mobile.R;
 
 public abstract class BalloonItemizedOverlay<Item> extends ItemizedOverlay<OverlayItem> {
 
-	private MapView mapView;
+	protected MapView mapView;
 	private BalloonOverlayView balloonView;
 	private View clickRegion;
 	private int viewOffset;

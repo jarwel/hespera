@@ -1,7 +1,6 @@
 package com.hespera.mobile;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import com.google.android.maps.GeoPoint;
@@ -9,19 +8,20 @@ import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.hespera.mobile.R;
-import com.hespera.mobile.client.EventClient;
-import com.hespera.mobile.map.EventOverlay;
+import com.hespera.mobile.event.Event;
+import com.hespera.mobile.event.EventClient;
+import com.hespera.mobile.event.EventOverlay;
 import com.hespera.mobile.map.InteractiveMapView;
 import com.hespera.mobile.map.InteractiveMapView.OnChangeListener;
-import com.hespera.mobile.model.Event;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
-public class MainActivity extends MapActivity {
+public class MainActivity extends MapActivity implements OnSeekBarChangeListener {
 
 	private int time = 3;
 	private EventOverlay eventOverlay;
@@ -31,13 +31,18 @@ public class MainActivity extends MapActivity {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.main);
 	    
+	    SeekBar seekBar = (SeekBar)findViewById(R.id.time_bar);
+	    seekBar.setOnSeekBarChangeListener(this);
+	    seekBar.setMax(24);
+	    seekBar.setProgress(time - 1);
+	    
 	    InteractiveMapView mapView = (InteractiveMapView)findViewById(R.id.mapview);
 	    mapView = (InteractiveMapView)findViewById(R.id.mapview);
 	    mapView.setOnChangeListener(new OnChangeListener() {
 			public void onChange(MapView view, GeoPoint newCenter, GeoPoint oldCenter, int newZoom, int oldZoom) {
 	    		if((!newCenter.equals(oldCenter)) || (newZoom != oldZoom)) {
 	    			Log.i(getClass().getSimpleName(), "map view changed");
-	    			updateMapView();
+	    			updateEvents();
 	    		}
 			}   
 	    });
@@ -49,36 +54,28 @@ public class MainActivity extends MapActivity {
 	    
 	    MapController mapController = mapView.getController();
 	    mapController.animateTo(new GeoPoint(32802955, -96769923));
-	    mapController.setZoom(12);
+	    mapController.setZoom(10);
+	}
+	
+	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+		time = progress + 1;
+		TextView textView = ((TextView)findViewById(R.id.time_label));
+		textView.setText(String.format("Events for the next %s hours", time));
 	}
 
-	public void increaseTime(View view) {
-		
-		if(time < 24) {
-			Log.i(getClass().getSimpleName(), "time increased to next " + ++time + " hours");
-			updateMapView();
-		}
+	public void onStartTrackingTouch(SeekBar seekBar) {
+		// TODO Auto-generated method stub
+	}
+
+	public void onStopTrackingTouch(SeekBar seekBar) {
+		updateEvents();	
 	}
 	
-	public void decreaseTime(View view) {
-		if(time > 1) {
-			Log.i(getClass().getSimpleName(), "time decreased to next " + --time + " hours");
-			updateMapView();
-		}
-	}	
-	
-	private void updateMapView() {
+	private void updateEvents() {
 		MapView mapView = (MapView)findViewById(R.id.mapview);
 		
-		runOnUiThread(new Runnable() {
-			public void run() {
-				TextView textView = ((TextView)findViewById(R.id.time_label));
-				textView.setText(String.format("Next %s Hours", time));
-			}
-		});
-		
-		Calendar start = new GregorianCalendar(); 
-		Calendar end = new GregorianCalendar();
+		Calendar start = Calendar.getInstance();
+		Calendar end = Calendar.getInstance();
 		end.add(Calendar.HOUR, time);
 		
 		long l = mapView.getLatitudeSpan();
@@ -94,6 +91,5 @@ public class MainActivity extends MapActivity {
 	protected boolean isRouteDisplayed() {
 		return false;
 	}
-	
 
 }

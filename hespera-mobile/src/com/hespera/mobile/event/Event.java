@@ -1,8 +1,12 @@
-package com.hespera.mobile.model;
+package com.hespera.mobile.event;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.UUID;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Event {
@@ -23,13 +27,15 @@ public class Event {
 		this.latitude = latitude;
 	}
 	
-	public Event(JSONObject jsonObject) {
-		this.id = UUID.fromString(jsonObject.optString("id"));
-		this.title = jsonObject.optString("title");
-		this.start = new Date(jsonObject.optLong("start"));
-		this.end = new Date(jsonObject.optLong("end"));
-		this.longitude = jsonObject.optDouble("longitude");
-		this.latitude = jsonObject.optDouble("latitude");
+	public Event(JSONObject jsonObject) throws ParseException, JSONException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+		this.id = UUID.fromString(jsonObject.getString("id"));
+		this.title = jsonObject.getString("title");
+		this.start = sdf.parse(jsonObject.getString("start"));
+		this.end = sdf.parse(jsonObject.getString("end"));
+		this.longitude = jsonObject.getDouble("longitude");
+		this.latitude = jsonObject.getDouble("latitude");
 	}
 
 	public UUID getId() {

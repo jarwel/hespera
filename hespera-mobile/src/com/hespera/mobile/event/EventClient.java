@@ -1,4 +1,4 @@
-package com.hespera.mobile.client;
+package com.hespera.mobile.event;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +14,6 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
-import com.hespera.mobile.model.Event;
 
 public enum EventClient {
 	

@@ -9,35 +9,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" android:gravity="center">
 
-        <Button
-            android:id="@+id/decrease_button"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="decreaseTime"
-            android:text="&lt;&lt;"/>
-
         <TextView
             android:id="@+id/time_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Next 3 hours"
             android:textAppearance="?android:attr/textAppearanceLarge" 
             android:layout_gravity="center" 
             android:gravity="center"/>
 
-        <Button
-            android:id="@+id/increase_button"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="increaseTime"
-            android:text=">>"/>
-
     </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/time_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     
     <com.hespera.mobile.map.InteractiveMapView
         android:id="@+id/mapview"
