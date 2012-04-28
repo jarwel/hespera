@@ -1,4 +1,4 @@
-package com.hespera.scraper.geo;
+package com.hespera.extraction.geo;
 
 public enum BaseballGeo {
 	

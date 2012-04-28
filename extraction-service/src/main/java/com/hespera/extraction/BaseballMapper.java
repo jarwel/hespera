@@ -1,6 +1,6 @@
-package com.hespera.scraper;
+package com.hespera.extraction;
 
-import com.hespera.scraper.geo.BaseballGeo;
+import com.hespera.extraction.geo.BaseballGeo;
 
 public enum BaseballMapper {
 	

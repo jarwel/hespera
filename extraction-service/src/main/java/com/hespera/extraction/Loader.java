@@ -1,4 +1,4 @@
-package com.hespera.scraper;
+package com.hespera.extraction;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -6,7 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.List;
 
-import com.hespera.scraper.model.Event;
+import com.hespera.extraction.model.Event;
 
 public class Loader {
 	

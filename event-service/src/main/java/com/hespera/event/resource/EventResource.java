@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.hespera.event.dao.EventDao;
 import com.hespera.event.model.Event;
+import com.proofpoint.log.Logger;
 import org.joda.time.DateTime;
 
 import javax.ws.rs.Consumes;
@@ -22,6 +23,7 @@ import java.util.UUID;
 
 @Path("v1/event")
 public class EventResource {
+    private final static Logger LOGGER = Logger.get(EventResource.class);
 
     private final EventDao eventDao;
 
@@ -46,12 +48,15 @@ public class EventResource {
     public Response get(
         @QueryParam("start") Long start,
         @QueryParam("end") Long end,
-        @QueryParam("longitude") Double longitude,
-        @QueryParam("latitude") Double latitude,
-        @QueryParam("distance") Double distance
+        @QueryParam("x") Double x,
+        @QueryParam("y") Double y,
+        @QueryParam("w") Double w,
+        @QueryParam("l") Double l
     ) {
-        Area area = new Area(new Rectangle2D.Double(longitude - distance, latitude - distance, distance * 2, distance * 2));
+        Area area = new Area(new Rectangle2D.Double(x, y, w, l));
         List<Event> events = eventDao.fetch(new DateTime(start), new DateTime(end), area);
+
+        LOGGER.info("search returning " + events.size() + " events");
         return Response.ok(events).build();
     }
 

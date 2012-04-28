@@ -1,4 +1,4 @@
-package com.hespera.scraper.model;
+package com.hespera.extraction.model;
 
 import java.util.Date;
 import java.util.UUID;

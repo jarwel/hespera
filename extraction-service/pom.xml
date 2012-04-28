@@ -4,14 +4,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>com.proofpoint.platform</groupId>
+        <artifactId>rest-server-base</artifactId>
+        <version>0.58</version>
+    </parent>
+
     <groupId>com.hespera</groupId>
-    <artifactId>hespera</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>extraction-service</artifactId>
     <version>0.1-SNAPSHOT</version>
-    <modules>
-        <module>event-service</module>
-        <module>extraction-service</module>
-    </modules>
+
+    <properties>
+        <main-class>com.hespera.extraction.Main</main-class>
+    </properties>
 
     <distributionManagement>
         <snapshotRepository>

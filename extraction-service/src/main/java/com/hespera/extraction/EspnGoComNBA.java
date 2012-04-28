@@ -1,4 +1,4 @@
-package com.hespera.scraper;
+package com.hespera.extraction;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,22 +7,24 @@ import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.hespera.scraper.geo.BaseballGeo;
-import com.hespera.scraper.model.Event;
+import com.hespera.extraction.geo.BasketballGeo;
+import com.hespera.extraction.model.Event;
 
-public class EspnGoComMLB {
-	
-	private static final String WEBSITE = "http://espn.go.com/mlb/schedule";
-	
-	private static final Pattern tablePattern = Pattern.compile("<table class=\"tablehead\" cellpadding=\"3\" cellspacing=\"1\"><tr class=\"stathead\">(.+?)</table>");
-	private static final Pattern entryPattern = Pattern.compile("<td>(<a href=\"/mlb/preview\\?gameId=\\d+\">)?[a-zA-Z\\. ]+(</a>)?</td><td align=\"right\">[a-zA-Z0-9 :]+</td>");
-	private static final Pattern datePattern = Pattern.compile("<a name=\"\\d{8}\">");
-	private static final Pattern titlePattern = Pattern.compile("<td>(<a href=\"/mlb/preview\\?gameId=\\d+\">)?([a-zA-Z\\. ]+?)at([a-zA-Z\\. ]+?)(</a>)?</td>");
+public class EspnGoComNBA {
+
+	private static final String WEBSITE = "http://espn.go.com/nba/schedule";
+
+	private static final Pattern tablePattern = Pattern.compile("<table cellpadding=\"3\" cellspacing=\"1\" class=\"tablehead\"><tr class=\"stathead\">(.+?)</table>");
+
+	private static final Pattern entryPattern = Pattern.compile("<td><a href=\"(.+?)\">[a-zA-Z\\. ]+</a> at <a href=\"(.+?)\">[a-zA-Z\\. ]+</a></td><td align=\"right\">(<a href=\"/nba/preview\\?gameId=\\d+\">)?[a-zA-Z0-9 :]+(</a>)?</td>");
+	private static final Pattern datePattern = Pattern.compile("<td colspan=\"10\">[a-zA-z]+, [a-zA-z]+ \\d{1,2}</td>");
+	private static final Pattern titlePattern = Pattern.compile("<a href=\"(.+?)\">[a-zA-Z\\. ]+</a> at <a href=\"(.+?)\">[a-zA-Z\\. ]+</a>");
 	private static final Pattern timePattern = Pattern.compile("\\d{1,2}:\\d{2} [AP]M");
 	
 	public static void main(String[] args) {
@@ -35,12 +37,13 @@ public class EspnGoComMLB {
 	    	Matcher tableMatcher = tablePattern.matcher(content);
 	    	while(tableMatcher.find()) {
 	    		String table = content.substring(tableMatcher.start(), tableMatcher.end()); 
-	    		
 	    		// Extract date from table header
 	    		String date = null;
 	    		Matcher dateMatcher = datePattern.matcher(table);
 	      		if(dateMatcher.find()) {
-	      			date = table.substring(dateMatcher.start(), dateMatcher.end()).replaceAll("\\D", "");
+	      			date = clean(table.substring(dateMatcher.start(), dateMatcher.end()));
+	      			date = date.substring(date.indexOf(", ") + 2);
+	      			date = date + " " + new GregorianCalendar().get(GregorianCalendar.YEAR);
 	    		}
 	    		
 	      		// Extract entries from table
@@ -63,22 +66,22 @@ public class EspnGoComMLB {
 	        		}
 		      		
 	    			// Determine location based on enum mappings
-		      		BaseballGeo baseballGeo = BaseballMapper.valueOf(title.substring(title.indexOf("at ") + 3).toUpperCase().replace(" ", "_").replace(".", "")).team();
-	        		Date dateTime = new SimpleDateFormat("yyyyMMdd h:mm a z").parse(date + " " + time + " EDT");
+	        		BasketballGeo basketballGeo = BasketballMapper.valueOf(title.substring(title.indexOf("at ") + 3).toUpperCase().replace(" ", "_").replace(".", "")).team();
+	        		Date dateTime = new SimpleDateFormat("MMM d yyyy h:mm a z").parse(date + " " + time + " EDT");
 	        		
 	        		Event event = new Event(
 	        			UUID.randomUUID(),
 	        			title,
 	        			dateTime,
 	        			dateTime,
-	        			baseballGeo.longitude(),
-	        			baseballGeo.latitude()		
+	        			basketballGeo.longitude(),
+	        			basketballGeo.latitude()		
 					);
 	        		events.add(event);
 	        	}
 	    	}
 		
-	        Loader.loadAll(events);
+	        //Loader.loadAll(events);
 			for(Event event : events) {
 				System.out.println(event);
 			}
@@ -112,5 +115,4 @@ public class EspnGoComMLB {
 		}
 		return builder.toString();
 	}
-
 }
