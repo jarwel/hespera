@@ -11,12 +11,14 @@ import android.widget.TextView;
 
 import com.google.android.maps.OverlayItem;
 import com.hespera.mobile.R;
+import com.hespera.mobile.event.EventOverlayItem;
 
 public class BalloonOverlayView extends FrameLayout {
 
 	private LinearLayout layout;
 	private TextView title;
-	private TextView snippet;
+	private TextView time;
+	private TextView tags;
 
 	public BalloonOverlayView(Context context, int balloonBottomOffset) {
 		super(context);
@@ -27,8 +29,9 @@ public class BalloonOverlayView extends FrameLayout {
 
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View v = inflater.inflate(R.layout.balloon_overlay, layout);
-		title = (TextView) v.findViewById(R.id.balloon_item_title);
-		snippet = (TextView) v.findViewById(R.id.balloon_item_snippet);
+		title = (TextView)v.findViewById(R.id.balloon_item_title);
+		time = (TextView)v.findViewById(R.id.balloon_item_time);
+		tags = (TextView)v.findViewById(R.id.balloon_item_tags);
 
 		ImageView close = (ImageView) v.findViewById(R.id.close_img_button);
 		close.setOnClickListener(new OnClickListener() {
@@ -47,19 +50,28 @@ public class BalloonOverlayView extends FrameLayout {
 
 	public void setData(OverlayItem item) {
 
+		EventOverlayItem eventOverlayItem = (EventOverlayItem)item;
+		
 		layout.setVisibility(VISIBLE);
-		if (item.getTitle() != null) {
+		if (eventOverlayItem.getTitle() != null) {
 			title.setVisibility(VISIBLE);
-			title.setText(item.getTitle());
+			title.setText(eventOverlayItem.getTitle());
 		} else {
 			title.setVisibility(GONE);
 		}
-		if (item.getSnippet() != null) {
-			snippet.setVisibility(VISIBLE);
-			snippet.setText(item.getSnippet());
+		if (eventOverlayItem.getTime() != null) {
+			time.setVisibility(VISIBLE);
+			time.setText(eventOverlayItem.getTime());
 		} else {
-			snippet.setVisibility(GONE);
+			time.setVisibility(GONE);
 		}
+		if (eventOverlayItem.getTags() != null) {
+			tags.setVisibility(VISIBLE);
+			tags.setText(eventOverlayItem.getTags());
+		} else {
+			tags.setVisibility(GONE);
+		}
+
 
 	}
 

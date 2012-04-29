@@ -83,7 +83,7 @@ public class MainActivity extends MapActivity implements OnSeekBarChangeListener
 		long y = mapView.getMapCenter().getLatitudeE6() - (l / 2);
 		long x = mapView.getMapCenter().getLongitudeE6() - (w / 2);
 		
-		List<Event> events = EventClient.INSTANCE.fetchEvents(start.getTime(), end.getTime(), (x / 1E6), (y/ 1E6), (w/ 1E6), (l/ 1E6));
+		List<Event> events = EventClient.INSTANCE.fetchEvents(start.getTime(), end.getTime(), (x / 1E6), (y / 1E6), (w / 1E6), (l / 1E6));
 		eventOverlay.update(events);
 	}
 	

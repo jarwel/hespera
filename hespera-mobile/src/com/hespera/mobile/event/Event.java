@@ -41,10 +41,15 @@ public class Event {
 		this.end = sdf.parse(jsonObject.getString("end"));
 		this.longitude = jsonObject.getDouble("longitude");
 		this.latitude = jsonObject.getDouble("latitude");
-		this.tags = new ArrayList<String>();
 		JSONArray jsonArray = jsonObject.optJSONArray("tags");
-		for(int i = 0; i < jsonArray.length(); i++) {
-			this.tags.add(jsonArray.optString(i));
+		if(jsonArray != null) {
+			this.tags = new ArrayList<String>();
+			for(int i = 0; jsonArray != null && i < jsonArray.length(); i++) {
+				this.tags.add(jsonArray.optString(i));
+			}
+		}
+		else {
+			this.tags = null;
 		}
 	}
 

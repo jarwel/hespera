@@ -81,7 +81,7 @@ public class EventfulCom extends Scraper {
     					dateTime, 
     					concertGeo.longitude, 
     					concertGeo.latitude,
-    					Lists.newArrayList("music")
+    					Lists.newArrayList("concert")
     				);
 		    		events.add(event);
 	    		}

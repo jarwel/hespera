@@ -12,9 +12,9 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
 import com.hespera.mobile.map.BalloonItemizedOverlay;
 
-public class EventOverlay extends BalloonItemizedOverlay<OverlayItem> {
+public class EventOverlay extends BalloonItemizedOverlay<EventOverlayItem> {
 
-	private List<OverlayItem> items = new ArrayList<OverlayItem>();
+	private List<EventOverlayItem> items = new ArrayList<EventOverlayItem>();
 	
 	public EventOverlay(Drawable defaultMarker, MapView mapView) {
 		super(boundCenterBottom(defaultMarker), mapView);
@@ -22,29 +22,28 @@ public class EventOverlay extends BalloonItemizedOverlay<OverlayItem> {
 		populate();
 	}
 
-	public void update(List<Event> events) {
+	synchronized public void update(List<Event> events) {
 		items.clear();
 		for(Event event : events) {
 			SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy h:mm a");
 			sdf.setTimeZone(TimeZone.getDefault());
 			
 			GeoPoint geoPoint = new GeoPoint((int)(event.getLatitude() * 1E6), (int)(event.getLongitude() * 1E6));
-			//String snippet = sdf.format(event.getStart());
-			String snippet = event.getTags().toString();
-			items.add(new OverlayItem(geoPoint, event.getTitle(), snippet));
+			String time = sdf.format(event.getStart());
+			String tags = event.getTags().toString();
+			items.add(new EventOverlayItem(geoPoint, event.getTitle(), time, tags));
 		}
 		setLastFocusedIndex(-1);
 		populate();
 	}
 	
 	@Override
-	protected OverlayItem createItem(int i) {
-		return items.get(i);
-	}
-
-	@Override
-	public int size() {
+	synchronized public int size() {
 		return items.size();
 	}
-
+	
+	@Override
+	synchronized protected OverlayItem createItem(int i) {
+		return items.get(i);
+	}
 }
