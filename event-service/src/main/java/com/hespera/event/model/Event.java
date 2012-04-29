@@ -5,6 +5,7 @@ import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
 
+import java.util.List;
 import java.util.UUID;
 
 public class Event {
@@ -15,6 +16,7 @@ public class Event {
     private final DateTime end;
     private final Double longitude;
     private final Double latitude;
+    private final List<String> tags;
 
     @JsonCreator
     public Event(
@@ -23,7 +25,8 @@ public class Event {
         @JsonProperty("start") DateTime start,
         @JsonProperty("end") DateTime end,
         @JsonProperty("longitude") Double longitude,
-        @JsonProperty("latitude") Double latitude
+        @JsonProperty("latitude") Double latitude,
+        @JsonProperty("tags") List<String> tags
     ) {
         this.id = Preconditions.checkNotNull(id, "id cannot be null");
         this.title = Preconditions.checkNotNull(title, "title cannot be null");
@@ -31,6 +34,7 @@ public class Event {
         this.end = Preconditions.checkNotNull(end, "end cannot be null");
         this.longitude = Preconditions.checkNotNull(longitude, "longitude cannot be null");
         this.latitude = Preconditions.checkNotNull(latitude, "latitude cannot be null");
+        this.tags = tags;
     }
 
     @JsonProperty("id")
@@ -61,6 +65,11 @@ public class Event {
     @JsonProperty("latitude")
     public Double getLatitude() {
         return latitude;
+    }
+
+    @JsonProperty("tags")
+    public List<String> getTags() {
+        return tags;
     }
 
     @Override

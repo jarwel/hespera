@@ -1,5 +1,6 @@
 package com.hespera.event.dao;
 
+import com.google.common.collect.Lists;
 import com.hespera.event.model.Event;
 import org.joda.time.DateTime;
 import org.testng.annotations.AfterMethod;
@@ -27,7 +28,7 @@ public class TestInMemoryEventDao {
 
     @Test
     public void testSave() {
-        Event expected = new Event(UUID.randomUUID(), "An Event", DateTime.now(), DateTime.now(), Double.valueOf(-122.3933494), Double.valueOf(37.7777683));
+        Event expected = new Event(UUID.randomUUID(), "An Event", DateTime.now(), DateTime.now(), -122.3933494, 37.7777683, Lists.newArrayList("sports"));
         eventDao.save(expected);
 
         Event actual = eventDao.get(expected.getId());
@@ -38,11 +39,12 @@ public class TestInMemoryEventDao {
         assertTrue(actual.getEnd().isEqual(expected.getEnd()));
         assertEquals(actual.getLongitude(), expected.getLongitude());
         assertEquals(actual.getLatitude(), expected.getLatitude());
+        assertEquals(actual.getTags(), expected.getTags());
     }
 
     @Test
     public void testGet() {
-        Event expected = new Event(UUID.randomUUID(), "An Event", DateTime.now(), DateTime.now(), Double.valueOf(-122.3933494), Double.valueOf(37.7777683));
+        Event expected = new Event(UUID.randomUUID(), "An Event", DateTime.now(), DateTime.now(), -122.3933494, 37.7777683, Lists.newArrayList("sports"));
         eventDao.save(expected);
 
         Event actual = eventDao.get(expected.getId());

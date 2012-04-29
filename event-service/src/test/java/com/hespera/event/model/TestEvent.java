@@ -1,5 +1,6 @@
 package com.hespera.event.model;
 
+import com.google.common.collect.Lists;
 import com.proofpoint.json.JsonCodec;
 import org.joda.time.DateTime;
 import org.testng.annotations.Test;
@@ -16,7 +17,7 @@ public class TestEvent {
 
     @Test
     public void testRoundTrip() {
-        Event expected = new Event(UUID.randomUUID(), "An Event", DateTime.now(), DateTime.now(), Double.valueOf(-122.3933494), Double.valueOf(37.7777683));
+        Event expected = new Event(UUID.randomUUID(), "An Event", DateTime.now(), DateTime.now(), -122.3933494, 37.7777683, Lists.newArrayList("sports"));
         Event actual = eventCodec.fromJson(eventCodec.toJson(expected));
 
         assertEquals(actual.getId(), expected.getId());
@@ -25,27 +26,29 @@ public class TestEvent {
         assertTrue(actual.getEnd().isEqual(expected.getEnd()));
         assertEquals(actual.getLongitude(), expected.getLongitude());
         assertEquals(actual.getLatitude(), expected.getLatitude());
+        assertEquals(actual.getTags(), expected.getTags());
     }
 
     @Test
     public void testEquivalence() {
         equivalenceTester()
             .addEquivalentGroup(
-                new Event(UUID.fromString("0de8861b-9d80-4396-8d45-1e681b6f69a8"), "Event 1", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MAX_VALUE), Double.valueOf(-122.3933494), Double.valueOf(37.7777683)),
-                new Event(UUID.fromString("0de8861b-9d80-4396-8d45-1e681b6f69a8"), "Event 2", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MAX_VALUE), Double.valueOf(-122.3933494), Double.valueOf(37.7777683)),
-                new Event(UUID.fromString("0de8861b-9d80-4396-8d45-1e681b6f69a8"), "Event 1", new DateTime(Integer.MAX_VALUE), new DateTime(Integer.MAX_VALUE), Double.valueOf(-122.3933494), Double.valueOf(37.7777683)),
-                new Event(UUID.fromString("0de8861b-9d80-4396-8d45-1e681b6f69a8"), "Event 1", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MIN_VALUE), Double.valueOf(-122.3933494), Double.valueOf(37.7777683)),
-                new Event(UUID.fromString("0de8861b-9d80-4396-8d45-1e681b6f69a8"), "Event 1", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MAX_VALUE), Double.valueOf(37.7777683), Double.valueOf(37.7777683)),
-                new Event(UUID.fromString("0de8861b-9d80-4396-8d45-1e681b6f69a8"), "Event 1", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MAX_VALUE), Double.valueOf(-122.3933494), Double.valueOf(-122.3933494))
-
-        )
+                new Event(UUID.fromString("0de8861b-9d80-4396-8d45-1e681b6f69a8"), "Event 1", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MAX_VALUE), 122.3933494, 37.7777683, Lists.newArrayList("sports")),
+                new Event(UUID.fromString("0de8861b-9d80-4396-8d45-1e681b6f69a8"), "Event 2", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MAX_VALUE), -122.3933494, 37.7777683, Lists.newArrayList("sports")),
+                new Event(UUID.fromString("0de8861b-9d80-4396-8d45-1e681b6f69a8"), "Event 1", new DateTime(Integer.MAX_VALUE), new DateTime(Integer.MAX_VALUE), -122.3933494, 37.7777683, Lists.newArrayList("sports")),
+                new Event(UUID.fromString("0de8861b-9d80-4396-8d45-1e681b6f69a8"), "Event 1", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MIN_VALUE), -122.3933494, 37.7777683, Lists.newArrayList("sports")),
+                new Event(UUID.fromString("0de8861b-9d80-4396-8d45-1e681b6f69a8"), "Event 1", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MAX_VALUE), 37.7777683, 37.7777683, Lists.newArrayList("sports")),
+                new Event(UUID.fromString("0de8861b-9d80-4396-8d45-1e681b6f69a8"), "Event 1", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MAX_VALUE), -122.3933494, -122.3933494, Lists.newArrayList("sports")),
+                new Event(UUID.fromString("0de8861b-9d80-4396-8d45-1e681b6f69a8"), "Event 1", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MAX_VALUE), 122.3933494, 37.7777683, Lists.newArrayList("music"))
+            )
             .addEquivalentGroup(
-                new Event(UUID.fromString("d4e7a756-5034-4815-b0f3-c338d802b5d6"), "Event 1", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MAX_VALUE), Double.valueOf(-122.3933494), Double.valueOf(37.7777683)),
-                new Event(UUID.fromString("d4e7a756-5034-4815-b0f3-c338d802b5d6"), "Event 2", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MAX_VALUE), Double.valueOf(-122.3933494), Double.valueOf(37.7777683)),
-                new Event(UUID.fromString("d4e7a756-5034-4815-b0f3-c338d802b5d6"), "Event 1", new DateTime(Integer.MAX_VALUE), new DateTime(Integer.MAX_VALUE), Double.valueOf(-122.3933494), Double.valueOf(37.7777683)),
-                new Event(UUID.fromString("d4e7a756-5034-4815-b0f3-c338d802b5d6"), "Event 1", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MIN_VALUE), Double.valueOf(-122.3933494), Double.valueOf(37.7777683)),
-                new Event(UUID.fromString("d4e7a756-5034-4815-b0f3-c338d802b5d6"), "Event 1", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MAX_VALUE), Double.valueOf(37.7777683), Double.valueOf(37.7777683)),
-                new Event(UUID.fromString("d4e7a756-5034-4815-b0f3-c338d802b5d6"), "Event 1", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MAX_VALUE), Double.valueOf(-122.3933494), Double.valueOf(-122.3933494))
+                new Event(UUID.fromString("d4e7a756-5034-4815-b0f3-c338d802b5d6"), "Event 1", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MAX_VALUE), -122.3933494, 37.7777683, Lists.newArrayList("sports")),
+                new Event(UUID.fromString("d4e7a756-5034-4815-b0f3-c338d802b5d6"), "Event 2", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MAX_VALUE), -122.3933494, 37.7777683, Lists.newArrayList("sports")),
+                new Event(UUID.fromString("d4e7a756-5034-4815-b0f3-c338d802b5d6"), "Event 1", new DateTime(Integer.MAX_VALUE), new DateTime(Integer.MAX_VALUE), -122.3933494, 37.7777683, Lists.newArrayList("sports")),
+                new Event(UUID.fromString("d4e7a756-5034-4815-b0f3-c338d802b5d6"), "Event 1", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MIN_VALUE), -122.3933494, 37.7777683, Lists.newArrayList("sports")),
+                new Event(UUID.fromString("d4e7a756-5034-4815-b0f3-c338d802b5d6"), "Event 1", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MAX_VALUE), 37.7777683, 37.7777683, Lists.newArrayList("sports")),
+                new Event(UUID.fromString("d4e7a756-5034-4815-b0f3-c338d802b5d6"), "Event 1", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MAX_VALUE), -122.3933494, -122.3933494, Lists.newArrayList("sports")),
+                new Event(UUID.fromString("d4e7a756-5034-4815-b0f3-c338d802b5d6"), "Event 1", new DateTime(Integer.MIN_VALUE), new DateTime(Integer.MAX_VALUE), -122.3933494, 37.7777683, Lists.newArrayList("music"))
             )
         .check();
     }
