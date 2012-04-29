@@ -33,15 +33,12 @@ public enum BaseballGeo {
 	ST_LOUIS_CARDINALS (-90.1933056, 38.6237172),
 	WASHINGTON_NATIONALS (-77.007283, 38.8730682);
 	
-	private final double longitude;
-	private final double latitude;
+	public final double longitude;
+	public final double latitude;
 	
 	private BaseballGeo(double longitude, double latitude) {
 		this.longitude = longitude;
 		this.latitude = latitude;
 	}
-	
-	public double longitude() { return longitude; };
-	public double latitude() { return latitude; };
 	
 }

@@ -15,14 +15,12 @@ public enum BasketballGeo {
 	TORONTO_RAPTORS (-79.3790852, 43.6436759),
 	WASHINGTON_WIZARDS (-77.0210577, 38.8975641);
 	
-	private final double longitude;
-	private final double latitude;
+	public final double longitude;
+	public final double latitude;
 	
 	private BasketballGeo(double longitude, double latitude) {
 		this.longitude = longitude;
 		this.latitude = latitude;
 	}
-	
-	public double longitude() { return longitude; };
-	public double latitude() { return latitude; };
+
 }

@@ -6,6 +6,8 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.List;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
 import com.hespera.extraction.model.Event;
 
 public class Loader {
@@ -30,9 +32,9 @@ public class Loader {
 			connection.connect();
 			
 			writer = new OutputStreamWriter(connection.getOutputStream());
-			writer.write(event.toJson());
-			writer.flush();
-			
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.writeValue(writer, event);
+	
 			connection.getResponseCode();
 			
 		} catch (Exception e) {

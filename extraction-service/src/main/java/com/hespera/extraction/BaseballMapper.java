@@ -35,12 +35,10 @@ public enum BaseballMapper {
 	ST_LOUIS (BaseballGeo.ST_LOUIS_CARDINALS),
 	WASHINGTON (BaseballGeo.WASHINGTON_NATIONALS);
 	
-	private final BaseballGeo team;
+	public final BaseballGeo team;
 	
 	private BaseballMapper(BaseballGeo team) {
 		this.team = team;
 	}
-	
-	public BaseballGeo team() { return team; };
 	
 }

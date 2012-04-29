@@ -17,11 +17,10 @@ public enum BasketballMapper {
 	TORONTO (BasketballGeo.TORONTO_RAPTORS),
 	WASHINGTON (BasketballGeo.WASHINGTON_WIZARDS);
 		
-	private final BasketballGeo team;
+	public final BasketballGeo team;
 	
 	private BasketballMapper(BasketballGeo team) {
 		this.team = team;
 	}
 	
-	public BasketballGeo team() { return team; };
 }

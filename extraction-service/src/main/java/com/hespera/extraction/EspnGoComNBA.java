@@ -1,8 +1,5 @@
 package com.hespera.extraction;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,10 +10,11 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.collect.Lists;
 import com.hespera.extraction.geo.BasketballGeo;
 import com.hespera.extraction.model.Event;
 
-public class EspnGoComNBA {
+public class EspnGoComNBA extends Scraper {
 
 	private static final String WEBSITE = "http://espn.go.com/nba/schedule";
 
@@ -66,7 +64,7 @@ public class EspnGoComNBA {
 	        		}
 		      		
 	    			// Determine location based on enum mappings
-	        		BasketballGeo basketballGeo = BasketballMapper.valueOf(title.substring(title.indexOf("at ") + 3).toUpperCase().replace(" ", "_").replace(".", "")).team();
+	        		BasketballGeo basketballGeo = BasketballMapper.valueOf(title.substring(title.indexOf("at ") + 3).toUpperCase().replace(" ", "_").replace(".", "")).team;
 	        		Date dateTime = new SimpleDateFormat("MMM d yyyy h:mm a z").parse(date + " " + time + " EDT");
 	        		
 	        		Event event = new Event(
@@ -74,8 +72,9 @@ public class EspnGoComNBA {
 	        			title,
 	        			dateTime,
 	        			dateTime,
-	        			basketballGeo.longitude(),
-	        			basketballGeo.latitude()		
+	        			basketballGeo.longitude,
+	        			basketballGeo.latitude,
+	        			Lists.newArrayList("sports", "basketball")
 					);
 	        		events.add(event);
 	        	}
@@ -90,29 +89,4 @@ public class EspnGoComNBA {
 		}
 	}
 	
-	private static String clean(String in) {
-		return in.replaceAll("<[^>]*>", "");
-	}
-	
-	private static String read(URI uri) throws Exception {
-		StringBuilder builder = new StringBuilder();
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new InputStreamReader(uri.toURL().openStream()));
-			
-			String inputLine;
-	        while((inputLine = reader.readLine()) != null) {
-	        	builder.append(inputLine);
-	        }
-		} finally {
-			if(reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return builder.toString();
-	}
 }

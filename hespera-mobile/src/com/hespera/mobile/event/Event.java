@@ -2,10 +2,13 @@ package com.hespera.mobile.event;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,14 +20,16 @@ public class Event {
 	private final Date end;
 	private final Double longitude;
 	private final Double latitude;
+	private final List<String> tags;
 	
-	public Event(UUID id, String title, Date start, Date end, Double longitude, Double latitude) {
+	public Event(UUID id, String title, Date start, Date end, Double longitude, Double latitude, List<String> tags) {
 		this.id = id;
 		this.title = title;
 		this.start = start;
 		this.end = end;
 		this.longitude = longitude;
 		this.latitude = latitude;
+		this.tags = tags;
 	}
 	
 	public Event(JSONObject jsonObject) throws ParseException, JSONException {
@@ -36,6 +41,11 @@ public class Event {
 		this.end = sdf.parse(jsonObject.getString("end"));
 		this.longitude = jsonObject.getDouble("longitude");
 		this.latitude = jsonObject.getDouble("latitude");
+		this.tags = new ArrayList<String>();
+		JSONArray jsonArray = jsonObject.optJSONArray("tags");
+		for(int i = 0; i < jsonArray.length(); i++) {
+			this.tags.add(jsonArray.optString(i));
+		}
 	}
 
 	public UUID getId() {
@@ -60,6 +70,10 @@ public class Event {
 
 	public Double getLatitude() {
 		return latitude;
+	}
+
+	public List<String> getTags() {
+		return tags;
 	}
 
 	@Override

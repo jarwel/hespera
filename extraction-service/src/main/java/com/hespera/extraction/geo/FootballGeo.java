@@ -15,14 +15,12 @@ public enum FootballGeo {
 	PITTSBURGH_STEELERS (-80.015942, 40.446093),
 	SAN_FRANCISCO_49ERS (-122.388814, 37.7147906);
 	
-	private final double longitude;
-	private final double latitude;
+	public final double longitude;
+	public final double latitude;
 	
 	private FootballGeo(double longitude, double latitude) {
 		this.longitude = longitude;
 		this.latitude = latitude;
 	}
 	
-	public double longitude() { return longitude; };
-	public double latitude() { return latitude; };
 }

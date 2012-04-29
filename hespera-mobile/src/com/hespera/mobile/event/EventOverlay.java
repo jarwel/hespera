@@ -29,7 +29,8 @@ public class EventOverlay extends BalloonItemizedOverlay<OverlayItem> {
 			sdf.setTimeZone(TimeZone.getDefault());
 			
 			GeoPoint geoPoint = new GeoPoint((int)(event.getLatitude() * 1E6), (int)(event.getLongitude() * 1E6));
-			String snippet = sdf.format(event.getStart());
+			//String snippet = sdf.format(event.getStart());
+			String snippet = event.getTags().toString();
 			items.add(new OverlayItem(geoPoint, event.getTitle(), snippet));
 		}
 		setLastFocusedIndex(-1);

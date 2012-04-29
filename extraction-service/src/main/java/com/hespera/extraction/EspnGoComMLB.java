@@ -12,6 +12,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.collect.Lists;
 import com.hespera.extraction.geo.BaseballGeo;
 import com.hespera.extraction.model.Event;
 
@@ -63,7 +64,7 @@ public class EspnGoComMLB {
 	        		}
 		      		
 	    			// Determine location based on enum mappings
-		      		BaseballGeo baseballGeo = BaseballMapper.valueOf(title.substring(title.indexOf("at ") + 3).toUpperCase().replace(" ", "_").replace(".", "")).team();
+		      		BaseballGeo baseballGeo = BaseballMapper.valueOf(title.substring(title.indexOf("at ") + 3).toUpperCase().replace(" ", "_").replace(".", "")).team;
 	        		Date dateTime = new SimpleDateFormat("yyyyMMdd h:mm a z").parse(date + " " + time + " EDT");
 	        		
 	        		Event event = new Event(
@@ -71,8 +72,9 @@ public class EspnGoComMLB {
 	        			title,
 	        			dateTime,
 	        			dateTime,
-	        			baseballGeo.longitude(),
-	        			baseballGeo.latitude()		
+	        			baseballGeo.longitude,
+	        			baseballGeo.latitude,
+	        			Lists.newArrayList("sports", "baseball")
 					);
 	        		events.add(event);
 	        	}
