@@ -1,6 +1,6 @@
 package com.hespera.extraction;
 
-import java.net.URI;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,8 +30,8 @@ public class EspnGoComNBA extends Scraper {
 		try {
 			List<Event> events = new ArrayList<Event>();
 			
-			URI uri = new URI(WEBSITE);
-			String content = read(uri);
+			URL url = new URL(WEBSITE);
+			String content = read(url);
 	
 	    	Matcher tableMatcher = tablePattern.matcher(content);
 	    	while(tableMatcher.find()) {
@@ -87,7 +87,7 @@ public class EspnGoComNBA extends Scraper {
 	        	}
 	    	}
 		
-	        //Loader.loadAll(events);
+	        Loader.loadAll(events);
 			for(Event event : events) {
 				System.out.println(event);
 			}

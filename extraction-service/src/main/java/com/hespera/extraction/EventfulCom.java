@@ -1,6 +1,6 @@
 package com.hespera.extraction;
 
-import java.net.URI;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,18 +22,18 @@ public class EventfulCom extends Scraper {
 	
 	private static List<Event> events = new ArrayList<Event>();
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 	
-		String[] urls = {
-			"http://eventful.com/sanfrancisco/events/categories/music/this-week",
-			"http://eventful.com/sanfrancisco/events/categories/music/this-week?page_number=2",
-			"http://eventful.com/sanfrancisco/events/categories/music/this-week?page_number=3",
-			"http://eventful.com/sanfrancisco/events/categories/music/this-week?page_number=4",
-			"http://eventful.com/sanfrancisco/events/categories/music/this-week?page_number=5"
+		URL[] urls = {
+			new URL("http://eventful.com/sanfrancisco/events/categories/music/this-week"),
+			new URL("http://eventful.com/sanfrancisco/events/categories/music/this-week?page_number=2"),
+			new URL("http://eventful.com/sanfrancisco/events/categories/music/this-week?page_number=3"),
+			new URL("http://eventful.com/sanfrancisco/events/categories/music/this-week?page_number=4"),
+			new URL("http://eventful.com/sanfrancisco/events/categories/music/this-week?page_number=5")
 		};
 		
 		
-		for(String url : urls) {
+		for(URL url : urls) {
 			scrape(url);
 		}
 		
@@ -44,9 +44,9 @@ public class EventfulCom extends Scraper {
 		
 	}
 	
-	public static void scrape(String url) {
+	public static void scrape(URL url) {
 		try {
-			String content = read(new URI(url));
+			String content = read(url);
 			
 			Matcher entryMatcher = entryPattern.matcher(content);
 	    	while(entryMatcher.find()) {

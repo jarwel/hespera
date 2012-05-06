@@ -1,9 +1,6 @@
 package com.hespera.extraction;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,7 +13,7 @@ import com.google.common.collect.Lists;
 import com.hespera.extraction.geo.BaseballGeo;
 import com.hespera.extraction.model.Event;
 
-public class EspnGoComMLB {
+public class EspnGoComMLB extends Scraper {
 	
 	private static final String WEBSITE = "http://espn.go.com/mlb/schedule";
 	
@@ -30,8 +27,8 @@ public class EspnGoComMLB {
 		try {
 			List<Event> events = new ArrayList<Event>();
 			
-			URI uri = new URI(WEBSITE);
-			String content = read(uri);
+			URL url = new URL(WEBSITE);
+			String content = read(url);
 	
 	    	Matcher tableMatcher = tablePattern.matcher(content);
 	    	while(tableMatcher.find()) {
@@ -87,32 +84,6 @@ public class EspnGoComMLB {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private static String clean(String in) {
-		return in.replaceAll("<[^>]*>", "");
-	}
-	
-	private static String read(URI uri) throws Exception {
-		StringBuilder builder = new StringBuilder();
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new InputStreamReader(uri.toURL().openStream()));
-			
-			String inputLine;
-	        while((inputLine = reader.readLine()) != null) {
-	        	builder.append(inputLine);
-	        }
-		} finally {
-			if(reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return builder.toString();
 	}
 
 }

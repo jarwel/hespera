@@ -3,15 +3,15 @@ package com.hespera.extraction;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URI;
+import java.net.URL;
 
 abstract class Scraper {
 	
-	protected static String read(URI uri) throws Exception {
+	protected static String read(URL url) throws Exception {
 		StringBuilder builder = new StringBuilder();
 		BufferedReader reader = null;
 		try {
-			reader = new BufferedReader(new InputStreamReader(uri.toURL().openStream()));
+			reader = new BufferedReader(new InputStreamReader(url.openStream()));
 			
 			String inputLine;
 	        while((inputLine = reader.readLine()) != null) {

@@ -14,7 +14,10 @@ import com.hespera.mobile.event.EventOverlay;
 import com.hespera.mobile.map.InteractiveMapView;
 import com.hespera.mobile.map.InteractiveMapView.OnChangeListener;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.SeekBar;
@@ -25,11 +28,14 @@ public class MainActivity extends MapActivity implements OnSeekBarChangeListener
 
 	private int time = 3;
 	private EventOverlay eventOverlay;
+	private LocationManager locationManager;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	 protected void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.main);
+	    
+	    locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
 	    
 	    SeekBar seekBar = (SeekBar)findViewById(R.id.time_bar);
 	    seekBar.setOnSeekBarChangeListener(this);
@@ -53,8 +59,10 @@ public class MainActivity extends MapActivity implements OnSeekBarChangeListener
 	    mapView.getOverlays().add(eventOverlay);
 	    
 	    MapController mapController = mapView.getController();
-	    mapController.animateTo(new GeoPoint(32802955, -96769923));
-	    mapController.setZoom(10);
+	    
+	    Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+	    mapController.animateTo(new GeoPoint((int)(location.getLatitude() * 1E6), (int)(location.getLongitude() * 1E6)));
+	    mapController.setZoom(14);
 	}
 	
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
