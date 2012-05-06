@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
@@ -23,6 +24,7 @@ public class EventOverlay extends BalloonItemizedOverlay<EventOverlayItem> {
 	}
 
 	synchronized public void update(List<Event> events) {
+		Log.i(getClass().getSimpleName(), "refreshing with " + events.size() + " events");
 		items.clear();
 		for(Event event : events) {
 			SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy h:mm a");

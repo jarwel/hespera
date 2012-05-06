@@ -1,4 +1,4 @@
-package com.hespera.mobile.event;
+package dao;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,10 +12,12 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.hespera.mobile.event.Event;
+
 import android.util.Log;
 
 
-public enum EventClient {
+public enum EventDao {
 	
 	INSTANCE;
 	

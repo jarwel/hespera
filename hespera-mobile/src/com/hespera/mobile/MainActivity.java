@@ -1,5 +1,7 @@
 package com.hespera.mobile;
 
+
+
 import java.util.Calendar;
 import java.util.List;
 
@@ -9,26 +11,33 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.hespera.mobile.R;
 import com.hespera.mobile.event.Event;
-import com.hespera.mobile.event.EventClient;
+import com.hespera.mobile.event.EventAdapter;
 import com.hespera.mobile.event.EventOverlay;
 import com.hespera.mobile.map.InteractiveMapView;
 import com.hespera.mobile.map.InteractiveMapView.OnChangeListener;
+
+import dao.EventDao;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.ViewAnimator;
 
 public class MainActivity extends MapActivity implements OnSeekBarChangeListener {
 
 	private int time = 3;
-	private EventOverlay eventOverlay;
 	private LocationManager locationManager;
+	private EventOverlay eventOverlay;
+	private EventAdapter eventAdapter;
 	
 	@Override
 	 protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +53,18 @@ public class MainActivity extends MapActivity implements OnSeekBarChangeListener
 	    
 	    InteractiveMapView mapView = (InteractiveMapView)findViewById(R.id.mapview);
 	    mapView = (InteractiveMapView)findViewById(R.id.mapview);
+	    
+	    // All update tasks should be initiated from the UI thread as AsyncTask to control execution
+	    //TODO: Re-factor for clarity
 	    mapView.setOnChangeListener(new OnChangeListener() {
 			public void onChange(MapView view, GeoPoint newCenter, GeoPoint oldCenter, int newZoom, int oldZoom) {
 	    		if((!newCenter.equals(oldCenter)) || (newZoom != oldZoom)) {
 	    			Log.i(getClass().getSimpleName(), "map view changed");
-	    			updateEvents();
+	    			runOnUiThread(new Runnable() {
+						public void run() {
+							new UpdateEventsTask().execute();
+						}
+					});
 	    		}
 			}   
 	    });
@@ -63,6 +79,10 @@ public class MainActivity extends MapActivity implements OnSeekBarChangeListener
 	    Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 	    mapController.animateTo(new GeoPoint((int)(location.getLatitude() * 1E6), (int)(location.getLongitude() * 1E6)));
 	    mapController.setZoom(14);
+	    
+	    eventAdapter = new EventAdapter(this, R.layout.list_item);
+	    ListView listView = (ListView)findViewById(R.id.listview);
+	    listView.setAdapter(eventAdapter);
 	}
 	
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -76,28 +96,50 @@ public class MainActivity extends MapActivity implements OnSeekBarChangeListener
 	}
 
 	public void onStopTrackingTouch(SeekBar seekBar) {
-		updateEvents();	
+		new UpdateEventsTask().execute();
 	}
 	
-	private void updateEvents() {
-		MapView mapView = (MapView)findViewById(R.id.mapview);
-		
-		Calendar start = Calendar.getInstance();
-		Calendar end = Calendar.getInstance();
-		end.add(Calendar.HOUR, time);
-		
-		long l = mapView.getLatitudeSpan();
-		long w = mapView.getLongitudeSpan();
-		long y = mapView.getMapCenter().getLatitudeE6() - (l / 2);
-		long x = mapView.getMapCenter().getLongitudeE6() - (w / 2);
-		
-		List<Event> events = EventClient.INSTANCE.fetchEvents(start.getTime(), end.getTime(), (x / 1E6), (y / 1E6), (w / 1E6), (l / 1E6));
-		eventOverlay.update(events);
+	public void showMap(View v) {
+		((ViewAnimator)findViewById(R.id.viewanimator)).setDisplayedChild(0);
+	}
+	
+	public void showList(View v) {
+		((ViewAnimator)findViewById(R.id.viewanimator)).setDisplayedChild(1);
 	}
 	
 	@Override
 	protected boolean isRouteDisplayed() {
 		return false;
 	}
+	
+	private class UpdateEventsTask extends AsyncTask<Void, Void, List<Event>> {
+		
+		private final Calendar start, end;
+		private final long l, w, y, x;
+		
+		public UpdateEventsTask() {
+			start = Calendar.getInstance();
+			end = Calendar.getInstance();
+			end.add(Calendar.HOUR, time);
+			
+			MapView mapView = (MapView)findViewById(R.id.mapview);
+			l = mapView.getLatitudeSpan();
+			w = mapView.getLongitudeSpan();
+			y = mapView.getMapCenter().getLatitudeE6() - (l / 2);
+			x = mapView.getMapCenter().getLongitudeE6() - (w / 2);
+		}
 
+		@Override
+		protected List<Event> doInBackground(Void... params) {
+			return EventDao.INSTANCE.fetchEvents(start.getTime(), end.getTime(), (x / 1E6), (y / 1E6), (w / 1E6), (l / 1E6));
+		}
+		
+		@Override
+		protected void onPostExecute(List<Event> events) {
+			eventOverlay.update(events);
+			eventAdapter.update(events);
+		}
+
+	}
+	
 }
