@@ -9,6 +9,7 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
+import com.google.android.maps.MyLocationOverlay;
 import com.hespera.mobile.R;
 import com.hespera.mobile.event.Event;
 import com.hespera.mobile.event.EventAdapter;
@@ -36,6 +37,7 @@ public class MainActivity extends MapActivity implements OnSeekBarChangeListener
 
 	private int time = 3;
 	private LocationManager locationManager;
+	private MyLocationOverlay locationOverlay;
 	private EventOverlay eventOverlay;
 	private EventAdapter eventAdapter;
 	
@@ -77,12 +79,28 @@ public class MainActivity extends MapActivity implements OnSeekBarChangeListener
 	    MapController mapController = mapView.getController();
 	    
 	    Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+	    
+	    locationOverlay = new MyLocationOverlay(this, mapView);
+	    locationOverlay.enableMyLocation();
+	    mapView.getOverlays().add(locationOverlay);
 	    mapController.animateTo(new GeoPoint((int)(location.getLatitude() * 1E6), (int)(location.getLongitude() * 1E6)));
 	    mapController.setZoom(14);
 	    
 	    eventAdapter = new EventAdapter(this, R.layout.list_item);
 	    ListView listView = (ListView)findViewById(R.id.listview);
 	    listView.setAdapter(eventAdapter);
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		locationOverlay.enableMyLocation();
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		locationOverlay.disableMyLocation();
 	}
 	
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
