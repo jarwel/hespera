@@ -11,13 +11,13 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 import com.hespera.mobile.R;
+import com.hespera.mobile.dao.EventDao;
 import com.hespera.mobile.event.Event;
 import com.hespera.mobile.event.EventAdapter;
 import com.hespera.mobile.event.EventOverlay;
 import com.hespera.mobile.map.InteractiveMapView;
 import com.hespera.mobile.map.InteractiveMapView.OnChangeListener;
 
-import dao.EventDao;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -36,7 +36,7 @@ import android.widget.ViewAnimator;
 public class MainActivity extends MapActivity implements OnSeekBarChangeListener {
 
 	private int time = 3;
-	private LocationManager locationManager;
+	private MapController mapController;
 	private MyLocationOverlay locationOverlay;
 	private EventOverlay eventOverlay;
 	private EventAdapter eventAdapter;
@@ -45,8 +45,6 @@ public class MainActivity extends MapActivity implements OnSeekBarChangeListener
 	 protected void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.main);
-	    
-	    locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
 	    
 	    SeekBar seekBar = (SeekBar)findViewById(R.id.time_bar);
 	    seekBar.setOnSeekBarChangeListener(this);
@@ -76,8 +74,9 @@ public class MainActivity extends MapActivity implements OnSeekBarChangeListener
 	    eventOverlay = new EventOverlay(defaultMarker, mapView);
 	    mapView.getOverlays().add(eventOverlay);
 	    
-	    MapController mapController = mapView.getController();
+	    mapController = mapView.getController();
 	    
+	    LocationManager locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
 	    Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 	    
 	    locationOverlay = new MyLocationOverlay(this, mapView);
@@ -95,6 +94,11 @@ public class MainActivity extends MapActivity implements OnSeekBarChangeListener
 	public void onResume() {
 		super.onResume();
 		locationOverlay.enableMyLocation();
+		locationOverlay.runOnFirstFix(new Runnable() {
+			public void run() {
+				mapController.animateTo(locationOverlay.getMyLocation());
+			}
+		});
 	}
 	
 	@Override

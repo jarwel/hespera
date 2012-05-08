@@ -1,4 +1,4 @@
-package dao;
+package com.hespera.mobile.dao;
 
 import java.io.BufferedReader;
 import java.io.IOException;
