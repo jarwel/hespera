@@ -4,6 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>com.proofpoint.platform</groupId>
+        <artifactId>library</artifactId>
+        <version>0.63</version>
+    </parent>
+
     <groupId>com.hespera</groupId>
     <artifactId>extraction-service</artifactId>
     <version>0.1-SNAPSHOT</version>
@@ -16,17 +22,14 @@
     	<dependency> 
    			<groupId>com.google.guava</groupId>
    			<artifactId>guava</artifactId>
-    		<version>11.0.2</version> 
 		</dependency> 
 		<dependency>
 		    <groupId>org.codehaus.jackson</groupId>
 		    <artifactId>jackson-mapper-asl</artifactId>
-		    <version>1.9.5</version>
 		</dependency>
 		<dependency>
 		    <groupId>org.codehaus.jackson</groupId>
 		    <artifactId>jackson-core-asl</artifactId>
-		    <version>1.9.5</version>
 		</dependency> 
 	</dependencies>
     
